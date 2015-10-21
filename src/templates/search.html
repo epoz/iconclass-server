@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="main">
+{% for obj in notation_objs %}
+    <p class="path"><a href="/rkd/{{obj.n}}/">{{obj.n}} {{obj.txt.en}}</a></p>        
+{% endfor %}   
+</div> 
+{% endblock content %}

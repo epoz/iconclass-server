@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+html { height: 100% }
+
+body { height: 100%; margin: 0; padding: 0; font-family: 'Verdana', serif;}
+a {text-decoration: none; color: #000;}
+p { margin: 0; }
+
+h1 {
+    font-size: 36px; letter-spacing: 5px; text-align: center; font-weight: normal;
+    display: block; margin-top: 1em; margin-bottom: 1em; color: #000;
+}
+h2 {font-size: 36px; text-align: center; line-height: 50%; font-weight: normal; }
+h3,h4  {font-style: normal; margin: 0; padding: 0; }
+
+#header { width:100%; background-color: #000; color: #ccc; font-size: 120%; padding: 5px;}
+#header a {color: #ddd;}
+#main {padding: 10px;}
+#icpath {padding: 5px; border-top: 2px solid #999; border-bottom: 2px solid #999}
+#keywords {font-style:italic; font-size: 80%;}
+#children { border-top: 2px solid #ccc; padding-top: 5px; margin-top: 5px; text-indent: -15px; padding-left: 15px;}
+    </style>    
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <title>{% block page_title %}Iconclass{% endblock page_title %}</title>
+  </head>  
+  <body>
+{% block header %}<div id="header"><a href="0">ICONCLASS</a><form action="/search" method="GET" style="display:inline-block; margin-left: 10px; margin-bottom: 0px">
+<input type="text" size="30" id="q" name="q" value="{% if q %}{{q}}{% endif %}">
+</form>
+</div>{% endblock header %}
+{% block content %}{% endblock content %}
+  </body>
+</html>

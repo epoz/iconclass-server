@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+>
+{% for obj in obj_list %}
+  <rdf:Description rdf:about="http://iconclass.org/{{obj.n|urlencode}}">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+    {% for lang, txt in obj.txt.items %}{% if lang != 'cn' %}<skos:prefLabel xml:lang="{{lang}}">{{txt}}</skos:prefLabel>{% endif %}
+    {% endfor %}
+    <skos:inScheme rdf:resource="http://iconclass.org/rdf/2011/09/"/>
+    {% if obj.n %}
+    <skos:notation>{{obj.n}}</skos:notation>
+    {% endif %}
+    {% for c in obj.c %}<skos:narrower rdf:resource="http://iconclass.org/{{c|urlencode}}"/>
+    {% endfor %}
+    {% for r in obj.r %}<skos:related rdf:resource="http://iconclass.org/{{r|urlencode}}"/>
+    {% endfor %}
+    {% if obj.p %}
+    <skos:broader rdf:resource="http://iconclass.org/{{obj.p|last|urlencode}}"/>
+    {% endif %}
+    {% for lang, kws in obj.kw.items %}{% if lang != 'cn' %}{% for kw in kws %}<dc:subject xml:lang="{{lang}}">{{kw}}</dc:subject>{% endfor %}{% endif %}{% endfor %}
+  </rdf:Description>
+{% endfor %}
+</rdf:RDF>

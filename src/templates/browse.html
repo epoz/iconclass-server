@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div id="main">  
+  {% for obj in root %}        
+        {% if obj.n == notation_obj.n.0 %}
+            <a style="float:right" href="/{{notation_obj.n}}.rdf">RDF</a>
+            <a style="float:right" href="/{{notation_obj.n}}.json">JSON &middot;</a>
+            <div id="icpath">
+            {% for p in path_objs %}
+                {% if forloop.last %}
+                  <p class="path" style="font-size: 120%; margin-top: 10px"><a href="/rkd/{{p.n}}/">{{p.n}} {{p.txt.en}}</a></p>
+                {% else %}
+                  <p class="path"><a href="/rkd/{{p.n}}/">{{p.n}} {{p.txt.en}}</a></p>
+                {% endif %}
+                
+            {% endfor %}
+
+            <div id="keywords">
+                {% for p in path_objs %}                
+                    {% for kw in p.kw.en %}{{kw}} &middot; {% endfor %}
+                {% endfor %}
+            </div>
+
+            {% if children_objs %}              
+              <div id="children">
+              {% for c in children_objs %}
+                  <p class="child"><a href="/rkd/{{c.n}}/">{{c.n}} {{c.txt.en}}</a></p>    
+               {% endfor %}
+              </div>
+            {% endif %}
+
+            
+            </div>
+            
+        {% else %}<p class="root"><a href="/rkd/{{obj.n}}/">{{obj.n}} {{obj.txt.en}}</a></p>        
+        {% endif %}
+  {% endfor %}
+
+  </div>
+{% endblock content %}
