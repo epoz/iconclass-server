@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'^$', views.home, name='home'),
     url(r'^(.+)/([\w|0-9|\'\:\.\,\-\& \+\(\)\.]+)/$', views.browse, name='browse'),
     url(r'^search$', views.search, name='search'),
+    url(r'^githubwebhook$', views.githubwebhook, name='githubwebhook'),
 
     url(r'^rdf/2011/09/$', views.linked_data, {'format':'rdf', 'notation':'scheme'}),
     url(r'^ICONCLASS$', views.linked_data, {'format':'rdf', 'notation':'ICONCLASS'}),    

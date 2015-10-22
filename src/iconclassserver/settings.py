@@ -102,3 +102,4 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 ES_INDEX_NAME = 'iconclassdev'
+REDIS_PREFIX = ES_INDEX_NAME

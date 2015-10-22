@@ -2,14 +2,23 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext, loader
 from django.shortcuts import render
 from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
 import urllib
 import iconclass
 import json
 import elasticsearch
+import redis
 
 def home(request):
     context = {'root' : iconclass.get_list('0 1 2 3 4 5 6 7 8 9'.split(' '))}
     return render(request, 'home.html', context)
+
+@csrf_exempt
+def githubwebhook(request):
+    data = request.read()
+    redis_c = redis.StrictRedis()
+    redis_c.lpush(settings.REDIS_PREFIX + '_gitpushes', data)
+    return HttpResponse("OK")
 
 def search(request):
     q = request.GET.get('q')
