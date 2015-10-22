@@ -55,3 +55,11 @@ docs/_build/
 
 # PyBuilder
 target/
+
+.DS_Store
+db.sqlite3
+
+# virtualenv
+bin/
+include/
+man/
