@@ -4,6 +4,7 @@ from django.conf import settings
 import iconclass
 import requests
 import time
+import os
 
 def handle_githubpushes():
     redis_c = redis.StrictRedis()
@@ -18,6 +19,7 @@ def handle_githubpushes():
             commit_id = commit['id']
             for filename in commit['modified']:
                 if filename.startswith('data/'):
+                    filepath, filename = os.path.split(filename)
                     fn, language = iconclass.action(filename[5:])
                     if not fn: continue
                     r = requests.get('https://raw.githubusercontent.com/'+full_name+'/master/'+filename)
