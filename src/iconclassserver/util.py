@@ -20,7 +20,7 @@ def handle_githubpushes():
             for filename in commit['modified']:
                 if filename.startswith('data/'):
                     filepath, filename = os.path.split(filename)
-                    fn, language = iconclass.action(filename[5:])
+                    fn, language = iconclass.action(filename)
                     if not fn: continue
                     r = requests.get('https://raw.githubusercontent.com/'+full_name+'/master/'+filename)
                     if r.status_code == 200:
