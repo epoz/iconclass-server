@@ -20,6 +20,7 @@ def githubwebhook(request):
     redis_c.lpush(settings.REDIS_PREFIX + '_gitpushes', data)
     return HttpResponse("OK")
 
+
 def search(request):
     q = request.GET.get('q')
     context = {'q':q}
@@ -34,7 +35,9 @@ def search(request):
     return render(request, 'search.html', context)
 
 
-def browse(request, himid='RKD', notation='0'):
+def browse(request, language, notation='0'):
+    if language == 'rkd':
+        return HttpResponseRedirect('/en/'+notation+'/')
     path_objs = iconclass.get_list(iconclass.get_parts(notation))
     notation_obj = path_objs[-1]
     if 'c' in notation_obj:
@@ -46,9 +49,10 @@ def browse(request, himid='RKD', notation='0'):
         'notation_obj' : path_objs[0],
         'path_objs' : path_objs,
         'children_objs' : children_objs,
-        'language' : himid
+        'language' : language
     }
     return render(request, 'browse.html', context)
+
 
 def sw(request, notation):
     'Semantic Web - Linked Data'
@@ -62,7 +66,8 @@ def sw(request, notation):
         response = HttpResponseRedirect('/' + urllib.quote(notation) +'.rdf')
         response.status_code = 303
         return response
-    return HttpResponseRedirect('/rkd/'+notation+'/')
+    return HttpResponseRedirect('/en/'+notation+'/')
+
 
 def linked_data_list(request, format):
     notations = request.REQUEST.getlist('notation')
@@ -77,6 +82,7 @@ def linked_data_list(request, format):
                 del obj['comments']
 
     return HttpResponse(json.dumps(data, indent=2), content_type='application/json')
+
 
 def linked_data(request, format, notation):
     if notation == 'scheme':
