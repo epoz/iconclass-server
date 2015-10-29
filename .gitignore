@@ -63,3 +63,7 @@ db.sqlite3
 bin/
 include/
 man/
+
+# For dev purposes handy to have a local iconclass.py in stead of packaged.
+iconclass.py
+.gitignore

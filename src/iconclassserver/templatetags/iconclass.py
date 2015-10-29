@@ -3,7 +3,7 @@ register = template.Library()
 
 @register.filter(name='text_lan')
 def text_lan(n_obj, language):
-    t = n_obj.get('txt', {}).get(language, '&nbsp;')
+    t = n_obj.get('txt', {}).get(language, u'')
     return t
 
 

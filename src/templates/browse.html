@@ -32,6 +32,13 @@
                     {% for kw in p|kw_lan:language %}{{kw}} &middot; {% endfor %}
                 {% endfor %}
             </div>
+            {% if sysref_objs %}            
+            <div id="sysrefs">
+              {% for r in sysref_objs %}
+              <p class="sysref"><a href="/{{language}}/{{r.n}}/">{{r.n}} {{r|text_lan:language}}</a></p>   
+              {% endfor %} 
+            </div>
+            {% endif %}
 
             {% if children_objs %}              
               <div id="children">
