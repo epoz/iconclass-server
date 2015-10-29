@@ -45,8 +45,8 @@ def browse(request, himid='RKD', notation='0'):
         'root' : iconclass.get_list('0 1 2 3 4 5 6 7 8 9'.split(' ')),
         'notation_obj' : path_objs[0],
         'path_objs' : path_objs,
-        'children_objs' : children_objs
-
+        'children_objs' : children_objs,
+        'language' : himid
     }
     return render(request, 'browse.html', context)
 

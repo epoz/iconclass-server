@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load iconclass %}
 
 {% block content %}
   <div id="main">  
@@ -9,23 +10,23 @@
             <div id="icpath">
             {% for p in path_objs %}
                 {% if forloop.last %}
-                  <p class="path" style="font-size: 120%; margin-top: 10px"><a href="/rkd/{{p.n}}/">{{p.n}} {{p.txt.en}}</a></p>
+                  <p class="path" style="font-size: 120%; margin-top: 10px"><a href="/{{language}}/{{p.n}}/">{{p.n}} {{p|text_lan:language}}</a></p>
                 {% else %}
-                  <p class="path"><a href="/rkd/{{p.n}}/">{{p.n}} {{p.txt.en}}</a></p>
+                  <p class="path"><a href="/{{language}}/{{p.n}}/">{{p.n}} {{p|text_lan:language}}</a></p>
                 {% endif %}
                 
             {% endfor %}
 
             <div id="keywords">
                 {% for p in path_objs %}                
-                    {% for kw in p.kw.en %}{{kw}} &middot; {% endfor %}
+                    {% for kw in p|kw_lan:language %}{{kw}} &middot; {% endfor %}
                 {% endfor %}
             </div>
 
             {% if children_objs %}              
               <div id="children">
               {% for c in children_objs %}
-                  <p class="child"><a href="/rkd/{{c.n}}/">{{c.n}} {{c.txt.en}}</a></p>    
+                  <p class="child"><a href="/{{language}}/{{c.n}}/">{{c.n}} {{c|text_lan:language}}</a></p>    
                {% endfor %}
               </div>
             {% endif %}
@@ -33,7 +34,7 @@
             
             </div>
             
-        {% else %}<p class="root"><a href="/rkd/{{obj.n}}/">{{obj.n}} {{obj.txt.en}}</a></p>        
+        {% else %}<p class="root"><a href="/{{language}}/{{obj.n}}/">{{obj.n}} {{obj|text_lan:language}}</a></p>        
         {% endif %}
   {% endfor %}
 
