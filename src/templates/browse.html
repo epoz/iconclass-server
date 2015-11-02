@@ -2,21 +2,20 @@
 {% load iconclass %}
 
 {% block content %}
-  <div id="main">  
+  <div id="main">
+  <div style="float:right">
+    <a href="/en/{{notation_obj.n}}/" title="English">en |</a>
+    <a href="/de/{{notation_obj.n}}/" title="Deutsch">de |</a>
+    <a href="/fr/{{notation_obj.n}}/" title="Française">fr |</a>
+    <a href="/it/{{notation_obj.n}}/" title="Italian">it |</a>
+    <a href="/nl/{{notation_obj.n}}/" title="Nederlands">nl |</a>
+    <a href="/pt/{{notation_obj.n}}/" title="Portugues">pt |</a>
+    <a href="/zh/{{notation_obj.n}}/" title="Chinese">zh</a>
+    <a style="margin-left: 20px" href="/{{notation_obj.n}}.rdf">RDF</a>
+    <a href="/{{notation_obj.n}}.json">JSON &middot;</a>
+  </div>
   {% for obj in root %}        
         {% if obj.n == notation_obj.n.0 %}
-            <div style="float:right">
-              <a href="/en/{{notation_obj.n}}/" title="English">en |</a>
-              <a href="/de/{{notation_obj.n}}/" title="Deutsch">de |</a>
-              <a href="/fr/{{notation_obj.n}}/" title="Française">fr |</a>
-              <a href="/it/{{notation_obj.n}}/" title="Italian">it |</a>
-              <a href="/nl/{{notation_obj.n}}/" title="Nederlands">nl |</a>
-              <a href="/pt/{{notation_obj.n}}/" title="Portugues">pt |</a>
-              <a href="/zh/{{notation_obj.n}}/" title="Chinese">zh</a>
-              <a style="margin-left: 20px" href="/{{notation_obj.n}}.rdf">RDF</a>
-              <a href="/{{notation_obj.n}}.json">JSON &middot;</a>
-            </div>
-
             <div id="icpath">
             {% for p in path_objs %}
                 {% if forloop.last %}
