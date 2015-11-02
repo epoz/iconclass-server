@@ -1,6 +1,7 @@
 import elasticsearch, elasticsearch.helpers
 import iconclass
 from django.conf import settings
+import redis
 
 def go():
     es = elasticsearch.Elasticsearch()
@@ -47,17 +48,34 @@ def ixable(obj, language):
     return o
 
 
-def index_iterator(notation, language, skip_keys=True):
+def ixable_iterator(notation, language, skip_keys=True):
     obj = iconclass.get(notation)
     if not obj: return
     yield ixable(obj, language)
     for k in obj.get('c', []):
         if skip_keys and k.find('(+') > 0: continue
-        for kk in index_iterator(k, language):
+        for kk in ixable_iterator(k, language):
             yield kk
 
-def index(notation, language):
+
+def fill_redis_q(notation, language):
+    redis_c = redis.StrictRedis()
+    count = 0
+    for x in index_iterator(notation, language):
+        q_size = redis_c.lpush(settings.REDIS_PREFIX + '_ic_index_q', x)
+        count += 1
+    return q_size, count
+
+
+def index_iterator():
+    redis_c = redis.StrictRedis()
+    while True:
+        tmp = redis_c.lpop(settings.REDIS_PREFIX + '_ic_index_q')
+        if not tmp: break
+        yield tmp
+
+def index(language):
     success_count, errors = elasticsearch.helpers.bulk(elasticsearch.Elasticsearch(), 
-                                                       index_iterator(notation, language),
+                                                       index_iterator(),
                                                        chunk_size=9999)
     return success_count, errors
