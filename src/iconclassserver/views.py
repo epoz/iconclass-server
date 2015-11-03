@@ -49,7 +49,7 @@ def browse(request, language, notation='0'):
         sysref_objs = iconclass.get_list(notation_obj['r'])
     context = {
         'root' : iconclass.get_list('0 1 2 3 4 5 6 7 8 9'.split(' ')),
-        'notation_obj' : path_objs[0],
+        'notation_obj' : notation_obj,
         'path_objs' : path_objs,
         'children_objs' : children_objs, 'sysref_objs' : sysref_objs,
         'language' : language

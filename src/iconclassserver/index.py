@@ -48,7 +48,7 @@ def ixable(obj, language):
     return o
 
 
-def ixable_iterator(notation, language, skip_keys=True):
+def ixable_iterator(notation, language, skip_keys=False):
     obj = iconclass.get(notation)
     if not obj: return
     yield ixable(obj, language)
@@ -73,6 +73,7 @@ def index_iterator():
         tmp = redis_c.lpop(settings.REDIS_PREFIX + '_ic_index_q')
         if not tmp: break
         yield json.loads(tmp)
+
 
 def index():
     success_count, errors = elasticsearch.helpers.bulk(elasticsearch.Elasticsearch(), 
