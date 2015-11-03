@@ -22,7 +22,8 @@ def init_index(language):
         "_source": {"enabled":  False },
         "properties" : {
             "notation": {"type": "string", "store": True, "index": "not_analyzed" },
-            "txt": {"type": "string", "store": False, "analyzer": "english"}
+            "txt": {"type": "string", "store": False, "analyzer": "english"},
+            "iskey": {"type": "boolean", "store": False, "index": "not_analyzed" }
         }
       }
     }
@@ -45,6 +46,8 @@ def ixable(obj, language):
         'txt': '\n'.join(path_texts),
         'notation': obj['n']
     }
+    if obj['n'].find('(+') > 0:
+        o['_source']['iskey'] = True
     return o
 
 
