@@ -3,6 +3,7 @@ import iconclass
 from django.conf import settings
 import redis
 import time
+import json
 
 
 def go():
@@ -10,12 +11,6 @@ def go():
     esi = elasticsearch.client.IndicesClient(es)
     esi.delete(index=settings.ES_INDEX_NAME + '_en')
     init_index('en')
-    print index('en')
-    r = es.search(index=settings.ES_INDEX_NAME + '_en', fields=['notation'])
-    print r['hits']['total']
-    for h in r['hits']['hits']:
-        print h['fields'].get('notation')[0]
-
 
 def init_index(language):
     ES_MAPPINGS = {
@@ -67,7 +62,7 @@ def fill_redis_q(notation, language):
     redis_c = redis.StrictRedis()
     count = 0
     for x in ixable_iterator(notation, language):
-        q_size = redis_c.lpush(settings.REDIS_PREFIX + '_ic_index_q', x)
+        q_size = redis_c.lpush(settings.REDIS_PREFIX + '_ic_index_q', json.dumps(x))
         count += 1
     return q_size, count
 
@@ -77,7 +72,7 @@ def index_iterator():
     while True:
         tmp = redis_c.lpop(settings.REDIS_PREFIX + '_ic_index_q')
         if not tmp: break
-        yield tmp
+        yield json.loads(tmp)
 
 def index():
     success_count, errors = elasticsearch.helpers.bulk(elasticsearch.Elasticsearch(), 
@@ -91,13 +86,13 @@ def redis_q_velocity():
     '''
     redis_c = redis.StrictRedis()
     last_size = 0
-    sizes = []
+    size_diffs = []
     for i in range(10):
         size = redis_c.llen(settings.REDIS_PREFIX + '_ic_index_q')
-        sizes.append(last_size-size)
+        size_diffs.append(last_size-size)
         last_size = size
         time.sleep(0.2)
-    sizes = sizes[1:] # discard the first one as we didn't start with the current size
-    return sum(sizes)/float(len(sizes)), sizes
+    size_diffs = size_diffs[1:] # discard the first one as we didn't start with the current size
+    return sum(size_diffs)/float(len(size_diffs)), last_size, size_diffs
 
 # TODO: AT this point all functionality related to redis_q is ripe to be refactored into a class.
