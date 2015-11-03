@@ -2,13 +2,15 @@ import elasticsearch, elasticsearch.helpers
 import iconclass
 from django.conf import settings
 import redis
+import time
+
 
 def go():
     es = elasticsearch.Elasticsearch()
     esi = elasticsearch.client.IndicesClient(es)
     esi.delete(index=settings.ES_INDEX_NAME + '_en')
     init_index('en')
-    print index('12A1', 'en')
+    print index('en')
     r = es.search(index=settings.ES_INDEX_NAME + '_en', fields=['notation'])
     print r['hits']['total']
     for h in r['hits']['hits']:
@@ -64,7 +66,7 @@ def ixable_iterator(notation, language, skip_keys=True):
 def fill_redis_q(notation, language):
     redis_c = redis.StrictRedis()
     count = 0
-    for x in index_iterator(notation, language):
+    for x in ixable_iterator(notation, language):
         q_size = redis_c.lpush(settings.REDIS_PREFIX + '_ic_index_q', x)
         count += 1
     return q_size, count
@@ -77,8 +79,25 @@ def index_iterator():
         if not tmp: break
         yield tmp
 
-def index(language):
+def index():
     success_count, errors = elasticsearch.helpers.bulk(elasticsearch.Elasticsearch(), 
                                                        index_iterator(),
                                                        chunk_size=9999)
     return success_count, errors
+
+
+def redis_q_velocity():
+    '''Check the Redis index q to see how the size changes over time. This velocity will indicate growth/shrinking
+    '''
+    redis_c = redis.StrictRedis()
+    last_size = 0
+    sizes = []
+    for i in range(10):
+        size = redis_c.llen(settings.REDIS_PREFIX + '_ic_index_q')
+        sizes.append(last_size-size)
+        last_size = size
+        time.sleep(0.2)
+    sizes = sizes[1:] # discard the first one as we didn't start with the current size
+    return sum(sizes)/float(len(sizes)), sizes
+
+# TODO: AT this point all functionality related to redis_q is ripe to be refactored into a class.
