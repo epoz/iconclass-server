@@ -21,12 +21,12 @@ def githubwebhook(request):
     return HttpResponse("OK")
 
 
-def search(request):
+def search(request, language):
     q = request.GET.get('q')
-    context = {'q':q}
+    context = {'q':q, 'language': language}
     if q:
         es = elasticsearch.Elasticsearch()
-        results = es.search(index=settings.ES_INDEX_NAME+'_en', 
+        results = es.search(index=settings.ES_INDEX_NAME+'_'+language, 
                             q=q, fields=['notation'],
                             default_operator='AND', size=99)
         context['count'] = results['hits']['total']
@@ -40,12 +40,12 @@ def browse(request, language, notation='0'):
         return HttpResponseRedirect('/en/'+notation+'/')
     path_objs = iconclass.get_list(iconclass.get_parts(notation))
     notation_obj = path_objs[-1]
-    if 'c' in notation_obj:
+    if notation_obj and 'c' in notation_obj:
         children_objs  = iconclass.get_list(notation_obj['c'])
     else:
         children_objs = []
     sysref_objs = []
-    if 'r' in notation_obj:
+    if notation_obj and 'r' in notation_obj:
         sysref_objs = iconclass.get_list(notation_obj['r'])
     context = {
         'root' : iconclass.get_list('0 1 2 3 4 5 6 7 8 9'.split(' ')),

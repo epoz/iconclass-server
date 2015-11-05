@@ -28,7 +28,7 @@ h3,h4  {font-style: normal; margin: 0; padding: 0; }
     <title>{% block page_title %}Iconclass{% endblock page_title %}</title>
   </head>  
   <body>
-{% block header %}<div id="header"><a href="0">ICONCLASS</a><form action="/search" method="GET" style="display:inline-block; margin-left: 10px; margin-bottom: 0px">
+{% block header %}<div id="header"><a href="0">ICONCLASS</a><form action="/{{language}}/search" method="GET" style="display:inline-block; margin-left: 10px; margin-bottom: 0px">
 <input type="text" size="30" id="q" name="q" value="{% if q %}{{q}}{% endif %}">
 </form>
 </div>{% endblock header %}

@@ -7,7 +7,7 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', views.home, name='home'),
     url(r'^(.+)/([\w|0-9|\'\:\.\,\-\& \+\(\)\.]+)/$', views.browse, name='browse'),
-    url(r'^search$', views.search, name='search'),
+    url(r'^(.+)/search$', views.search, name='search'),
     url(r'^githubwebhook$', views.githubwebhook, name='githubwebhook'),
     url(r'^stats$', views.stats, name='stats'),
 
