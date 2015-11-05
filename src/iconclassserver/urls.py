@@ -1,7 +1,7 @@
 from django.conf.urls import include, url
 from django.contrib import admin
 
-import views
+import views, util
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^(.+)/([\w|0-9|\'\:\.\,\-\& \+\(\)\.]+)/$', views.browse, name='browse'),
     url(r'^search$', views.search, name='search'),
     url(r'^githubwebhook$', views.githubwebhook, name='githubwebhook'),
+    url(r'^stats$', views.stats, name='stats'),
 
     url(r'^rdf/2011/09/$', views.linked_data, {'format':'rdf', 'notation':'scheme'}),
     url(r'^ICONCLASS$', views.linked_data, {'format':'rdf', 'notation':'ICONCLASS'}),    

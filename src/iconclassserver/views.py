@@ -115,3 +115,13 @@ def linked_data(request, format, notation):
         if 'comments' in obj:
             del obj['comments']
     return HttpResponse(json.dumps(obj, indent=2), content_type='application/json')
+
+
+def stats(request):
+    redis_c = redis.StrictRedis()
+    gitpushes  = filter(None, [redis_c.lindex(settings.REDIS_PREFIX + '_gitpushlog', x) for x in range(100)])
+
+    return render(request, 'stats.html', {'gitpushes': gitpushes})
+
+    
+
