@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 {% load iconclass %}
 
+{% block header %}<div id="header"><a href="0">ICONCLASS</a><form action="/{{language}}/search" method="GET" style="display:inline-block; margin-left: 10px; margin-bottom: 0px">
+<input type="text" size="30" id="q" name="q" value="{% if q %}{{q}}{% endif %}">
+</form>
+</div>{% endblock header %}
+
 {% block content %}
   <div id="main">
   <div style="float:right">
@@ -11,6 +16,7 @@
     <a {% if language != "fi"%}href="/fi/{{notation_obj.n}}/" title="Finnish">fi |</a>{% endif %}
     <a {% if language != "nl"%}href="/nl/{{notation_obj.n}}/" title="Nederlands">nl |</a>{% endif %}
     <a {% if language != "pt"%}href="/pt/{{notation_obj.n}}/" title="Portugues">pt |</a>{% endif %}
+    <a {% if language != "pl"%}href="/pl/{{notation_obj.n}}/" title="Polska">pt |</a>{% endif %}
     <a {% if language != "es"%}href="/es/{{notation_obj.n}}/" title="Espanol">es |</a>{% endif %}
     <a {% if language != "zh"%}href="/zh/{{notation_obj.n}}/" title="中国">zh</a>{% endif %}
     <a style="margin-left: 20px" href="/{{notation_obj.n}}.rdf">RDF</a>
