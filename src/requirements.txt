@@ -1,4 +1,4 @@
-Django==1.8.5
+Django==1.11.29
 ICONCLASS==0.1
 elasticsearch==2.1.0
 redis==2.10.3
